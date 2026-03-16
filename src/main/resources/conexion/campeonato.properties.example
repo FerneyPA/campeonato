@@ -1,0 +1,14 @@
+# ============================================================
+# Módulo: Campeonato — ARCHIVO DE EJEMPLO
+# Copia este archivo como campeonato.properties y completa
+# con los valores de tu entorno local
+# NUNCA subas campeonato.properties al repositorio
+# ============================================================
+
+# JNDI — producción
+jndi.campeonato=java:comp/env/jdbc/campeonatoDB
+
+# DriverManager — tests y diagnóstico
+driver.campeonato.url=jdbc:mysql://localhost:3306/campeonatoDB
+driver.campeonato.usuario=
+driver.campeonato.clave=

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Acceso denegado</title>
+</h:head>
+
+<h:body>
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+
+        <p:card style="width: 480px; text-align: center;">
+
+            <f:facet name="header">
+                <h:outputText value="Acceso denegado" />
+            </f:facet>
+
+            <p:outputLabel value="No tienes permisos para acceder a esta página."
+                           style="display: block; margin-bottom: 16px;" />
+
+            <p:outputLabel value="Si crees que esto es un error contacta al administrador."
+                           style="display: block; color: var(--text-color-secondary);
+                                  margin-bottom: 24px; font-size: 13px;" />
+
+            <h:form>
+                <p:commandButton value="Volver al inicio"
+                                 action="#{loginBean.irHome}"
+                                 icon="pi pi-home"
+                                 styleClass="p-button-outlined" />
+            </h:form>
+
+        </p:card>
+
+    </div>
+
+</h:body>
+</html>

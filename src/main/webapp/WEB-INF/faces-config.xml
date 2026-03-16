@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="4.0">
+
+    <!-- ============================================================
+         ResourceBundle de vistas — disponible en todos los XHTML
+         como #{msg.clave}
+         El basename debe coincidir exactamente con el nombre del
+         archivo en src/main/resources/
+         ============================================================ -->
+    <application>
+        <resource-bundle>
+            <base-name>vistas</base-name>
+            <var>msg</var>
+        </resource-bundle>
+    </application>
+
+    <!-- ============================================================
+         Reglas de navegación del módulo de login
+         ============================================================ -->
+
+    <!-- Login exitoso → ir a home -->
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/home.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Login fallido → volver a login -->
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Cerrar sesión → volver a login -->
+    <navigation-rule>
+        <from-view-id>/home.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+</faces-config>

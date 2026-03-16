@@ -1,0 +1,14 @@
+# ============================================================
+# Módulo: Seguridad — ARCHIVO DE EJEMPLO
+# Copia este archivo como seguridad.properties y completa
+# con los valores de tu entorno local
+# NUNCA subas seguridad.properties al repositorio
+# ============================================================
+
+# JNDI — producción
+jndi.seguridad=java:comp/env/jdbc/seguridadDB
+
+# DriverManager — tests y diagnóstico
+driver.seguridad.url=jdbc:mysql://localhost:3306/seguridadDB
+driver.seguridad.usuario=
+driver.seguridad.clave=

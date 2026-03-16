@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.campeonato</groupId>
+	<artifactId>campeonato</artifactId>
+	<version>1.0.0</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+
+	<dependencies>
+
+		<!-- Jakarta EE 10 API -->
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- ============================================================
+		     PrimeFaces Community — componentes JSF nativos
+		     Licencia: MIT — uso libre en proyectos empresariales
+		     ============================================================ -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>14.0.0</version>
+			<classifier>jakarta</classifier>
+		</dependency>
+
+		<!-- ============================================================
+		     Logging — SLF4J + Logback
+		     Licencia: MIT (SLF4J) y LGPL 2.1 (Logback)
+		     ============================================================ -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.12</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+
+		<!-- ============================================================
+		     DRIVER DE BASE DE DATOS
+		     scope=test → disponible en pruebas unitarias pero NO
+		     se empaqueta en el .war
+		     Descomenta el que vayas a usar
+		     ============================================================ -->
+
+		<!-- MySQL -->
+		<!--
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.3.0</version>
+			<scope>test</scope>
+		</dependency>
+		-->
+
+		<!-- PostgreSQL -->
+		<!--
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+			<scope>test</scope>
+		</dependency>
+		-->
+
+		<!-- Oracle -->
+		<!--
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc11</artifactId>
+			<version>23.3.0.23.09</version>
+			<scope>test</scope>
+		</dependency>
+		-->
+
+		<!-- SQL Server -->
+		<!--
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>12.6.0.jre11</version>
+			<scope>test</scope>
+		</dependency>
+		-->
+
+		<!-- ============================================================
+		     JUnit 5 para pruebas unitarias
+		     ============================================================ -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.10.2</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>

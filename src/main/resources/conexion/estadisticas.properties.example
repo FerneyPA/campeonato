@@ -1,0 +1,14 @@
+# ============================================================
+# Módulo: Estadísticas — ARCHIVO DE EJEMPLO
+# Copia este archivo como estadisticas.properties y completa
+# con los valores de tu entorno local
+# NUNCA subas estadisticas.properties al repositorio
+# ============================================================
+
+# JNDI — producción
+jndi.estadisticas=java:comp/env/jdbc/estadisticasDB
+
+# DriverManager — tests y diagnóstico
+driver.estadisticas.url=jdbc:mysql://localhost:3306/estadisticasDB
+driver.estadisticas.usuario=
+driver.estadisticas.clave=

@@ -1,0 +1,43 @@
+<project name="campeonato" default="war" basedir="..">
+	<!--  Directorios del proyecto  -->
+	<property name="src.dir" value="src/main/java" />
+	<property name="web.dir" value="src/main/webapp" />
+	<property name="build.dir" value="build_output" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<!--  Directorio externo donde quieres el WAR  -->
+	<property name="external.dist.dir" value="C:/ear" />
+	<!--  Limpiar  -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${external.dist.dir}" />
+	</target>
+	<!--  Compilar  -->
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+			<classpath>
+				<fileset dir="C:/payara6/glassfish/modules">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	<!--  Copiar recursos web  -->
+	<target name="prepare" depends="compile">
+		<mkdir dir="${build.dir}/webapp" />
+		<copy todir="${build.dir}/webapp">
+			<fileset dir="${web.dir}" />
+		</copy>
+		<copy todir="${build.dir}/webapp/WEB-INF/classes">
+			<fileset dir="${classes.dir}" />
+		</copy>
+	</target>
+	<!--  Crear WAR  -->
+	<target name="war" depends="prepare">
+		<mkdir dir="${external.dist.dir}" />
+		<war destfile="${external.dist.dir}/campeonato.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${build.dir}/webapp" />
+		</war>
+		<echo>WAR generado en: ${external.dist.dir}/campeonato.war</echo>
+	</target>
+</project>

@@ -1,0 +1,76 @@
+.layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.layout-content {
+    flex: 1;
+    padding: 24px;
+    background-color: #f8f9fa;
+}
+
+.layout-footer {
+    background-color: #f1f1f1;
+    border-top: 1px solid #dee2e6;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* Menubar */
+#menuForm {
+    margin: 0;
+    padding: 0;
+}
+
+#menuForm .ui-menubar {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 0 16px;
+}
+
+.ui-menubar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.ui-menubar .ui-menuitem-link {
+    padding: 10px 16px;
+}
+
+.ui-menubar .ui-menuitem-text {
+    font-size: 14px;
+}
+
+.ui-menubar .ui-menu-child {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    min-width: 200px;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem-link {
+    padding: 8px 16px;
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem-text {
+    font-size: 13px;
+}
+
+/* Usuario en el lado derecho */
+.menu-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.menu-user-info .p-button {
+    font-size: 12px;
+    padding: 6px 12px;
+}

@@ -1,61 +1,52 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="jakarta.faces.facelets">
 
-<ui:composition template="/WEB-INF/template.xhtml">
+<ui:composition template="/WEB-INF/template-login.xhtml">
 
-    <!-- Título de la pestaña -->
-    <ui:define name="titulo">#{msg.loginTitulo}</ui:define>
-
-    <!-- Contenido principal -->
     <ui:define name="contenido">
 
-        <!-- Mensajes de error enviados desde LoginBean via FacesMessage -->
-        <p:growl id="mensajes" showDetail="false" life="5000" />
+        <h:form id="loginForm">
 
-        <div style="display: flex; justify-content: center;
-                    align-items: center; height: 80vh;">
+            <p:growl id="mensajes" showDetail="false" life="5000"/>
 
-            <p:card style="width: 400px;">
+            <p:card style="width: 380px;">
 
                 <f:facet name="header">
-                    <h:outputText value="#{msg.loginEncabezado}" />
+                    <h:outputText value="#{msg.loginEncabezado}"/>
                 </f:facet>
 
-                <h:form id="login-form">
+                <p:panelGrid columns="1" style="width: 100%" columnClasses="label,value">
 
-                    <p:panelGrid columns="1" style="width: 100%">
+                    <p:outputLabel value="#{msg.loginLabelUsuario}" for="username"/>
+                    <p:inputText id="username"
+                                 value="#{loginBean.username}"
+                                 required="true"
+                                 requiredMessage="#{msg.loginValidacionUsuario}"
+                                 style="width: 100%"/>
 
-                        <p:outputLabel value="#{msg.loginLabelUsuario}" for="username" />
-                        <p:inputText id="username"
-                                     value="#{loginBean.username}"
-                                     required="true"
-                                     requiredMessage="#{msg.loginValidacionUsuario}"
-                                     style="width: 100%" />
+                    <p:outputLabel value="#{msg.loginLabelPassword}" for="password"/>
+                    <p:password id="password"
+                                value="#{loginBean.password}"
+                                required="true"
+                                requiredMessage="#{msg.loginValidacionPassword}"
+                                feedback="false"
+                                style="width: 100%"/>
 
-                        <p:outputLabel value="#{msg.loginLabelPassword}" for="password" />
-                        <p:password id="password"
-                                    value="#{loginBean.password}"
-                                    required="true"
-                                    requiredMessage="#{msg.loginValidacionPassword}"
-                                    feedback="false"
-                                    style="width: 100%" />
+                </p:panelGrid>
 
-                    </p:panelGrid>
-
-                    <p:commandButton value="#{msg.loginBotonEntrar}"
-                                     action="#{loginBean.login}"
-                                     update="mensajes"
-                                     style="width: 100%; margin-top: 16px" />
-
-                </h:form>
+                <p:commandButton value="#{msg.loginBotonEntrar}"
+                                 action="#{loginBean.login}"
+                                 update="mensajes"
+                                 style="width: 100%; margin-top: 16px"
+                                 icon="pi pi-sign-in"/>
 
             </p:card>
 
-        </div>
+        </h:form>
 
     </ui:define>
 

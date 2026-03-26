@@ -3,6 +3,7 @@ src/main/resources/conexion/campeonato.properties
 src/main/resources/conexion/estadisticas.properties
 TelosysTools/*.dbrep
 TelosysTools/telosys-tools.cfg
+
 target/
 build_output/
 .classpath
@@ -11,10 +12,15 @@ build_output/
 .metadata/
 logs/
 *.log
-Thumbs.db
-Desktop.ini
+
 *.class
+*.log
+target/
+
 *.jar
 *.war
 *.ear
 hs_err_pid*
+
+Thumbs.db
+Desktop.ini

@@ -8,10 +8,6 @@ public class MenuItemDto {
     private final String padreId;
     private final int    orden;
 
-    // ============================================================
-    // Constructor — recibe los datos crudos de la BD
-    // incluyendo padre_id para que MenuBusiness arme el árbol
-    // ============================================================
     public MenuItemDto(String id, String nombre, String url,
                        String padreId, int orden) {
         this.id      = id;

@@ -1,88 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- ============================================================
-         Propiedades generales
-         ============================================================ -->
-
-    <!-- Carpeta donde se guardan los logs — ajusta según tu servidor -->
     <property name="LOG_DIR"  value="logs" />
     <property name="LOG_FILE" value="campeonato" />
-
-    <!-- ============================================================
-         Appender CONSOLA — muestra logs en la consola del servidor
-         ============================================================ -->
     <appender name="CONSOLA" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{36}] - %msg%n</pattern>
         </encoder>
     </appender>
-
-    <!-- ============================================================
-         Appender ARCHIVO — escribe logs en archivo con rotación diaria
-         ============================================================ -->
     <appender name="ARCHIVO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-
-        <!-- Archivo activo del día -->
         <file>${LOG_DIR}/${LOG_FILE}.log</file>
-
-        <!-- Rotación: un archivo por día, máximo 30 días guardados -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/${LOG_FILE}-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>500MB</totalSizeCap>
         </rollingPolicy>
-
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{36}] - %msg%n</pattern>
         </encoder>
-
     </appender>
-
-    <!-- ============================================================
-         Appender ARCHIVO_ERRORES — solo errores en archivo separado
-         ============================================================ -->
     <appender name="ARCHIVO_ERRORES" class="ch.qos.logback.core.rolling.RollingFileAppender">
-
         <file>${LOG_DIR}/${LOG_FILE}-errores.log</file>
-
-        <!-- Solo registra nivel ERROR -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/${LOG_FILE}-errores-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
         </rollingPolicy>
-
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{36}] - %msg%n</pattern>
         </encoder>
-
     </appender>
-
-    <!-- ============================================================
-         Logger específico del proyecto campeonato
-         Nivel INFO — registra INFO, WARN y ERROR
-         Para ver más detalle en desarrollo cambiar a DEBUG
-         ============================================================ -->
     <logger name="com.campeonato" level="INFO" additivity="false">
         <appender-ref ref="CONSOLA" />
         <appender-ref ref="ARCHIVO" />
         <appender-ref ref="ARCHIVO_ERRORES" />
     </logger>
-
-    <!-- ============================================================
-         Logger raíz — para librerías externas
-         Nivel WARN — solo advertencias y errores de terceros
-         ============================================================ -->
     <root level="WARN">
         <appender-ref ref="CONSOLA" />
         <appender-ref ref="ARCHIVO" />
     </root>
-
 </configuration>

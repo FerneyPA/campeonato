@@ -1,38 +1,108 @@
 package com.campeonato.services;
 
 import com.campeonato.exception.LogManager;
+import com.campeonato.inicio.beans.UsuarioSesion;
+import com.campeonato.menu.MenuCache;
+import com.campeonato.menu.MenuModelBean;
+import com.campeonato.business.LoginBusiness;
+
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+
 import org.slf4j.Logger;
 
-public abstract class AbstractLoginService implements ILoginService {
+@Stateless
+public class AbstractLoginService implements ILoginService
+{
 
     private static final Logger log = LogManager.getLogger(AbstractLoginService.class);
 
+    @Inject
+    private LoginBusiness loginBusiness;
+
+    @Inject
+    private MenuCache menuCache;
+
+    @Inject
+    private MenuModelBean menuModelBean;
+
     // ============================================================
-    // Métodos de logging reutilizables para todas las
-    // implementaciones del servicio de login
+    // Login — loguea entrada/salida y delega al Business
+    // Después del login reconstruye el MenuModel con los datos
+    // del usuario autenticado
+    // ============================================================
+    @Override
+    public boolean login(String username, String password, UsuarioSesion usuarioSesion)
+    {
+        logInicioLogin(username);
+
+        try
+        {
+            boolean resultado = loginBusiness.validarCredenciales(
+                username, password, usuarioSesion, menuCache
+            );
+
+            if (resultado)
+            {
+                // Reconstruir el MenuModel con el árbol cargado en MenuCache
+                menuModelBean.refrescar();
+            }
+
+            logFinLogin(username, resultado);
+            return resultado;
+
+        } catch (Exception e)
+        {
+            logError(username, e);
+            throw e;
+        }
+    }
+
+    // ============================================================
+    // Logout — loguea entrada/salida y limpia la sesión
+    // ============================================================
+    @Override
+    public void logout(String username, UsuarioSesion usuarioSesion)
+    {
+        logInicioLogout(username);
+        usuarioSesion.cerrarSesion();
+        menuCache.limpiar();
+        menuModelBean.refrescar();
+        logFinLogout(username);
+    }
+
+    // ============================================================
+    // Métodos de logging
     // ============================================================
 
-    protected void logInicioLogin(String username) {
+    private void logInicioLogin(String username)
+    {
         log.info("[SERVICE] Inicio de login para usuario: {}", username);
     }
 
-    protected void logFinLogin(String username, boolean exitoso) {
-        if (exitoso) {
+    private void logFinLogin(String username, boolean exitoso)
+    {
+        if (exitoso)
+        {
             log.info("[SERVICE] Login exitoso para usuario: {}", username);
-        } else {
+        } else
+        {
             log.warn("[SERVICE] Login fallido para usuario: {}", username);
         }
     }
 
-    protected void logInicioLogout(String username) {
+    private void logInicioLogout(String username)
+    {
         log.info("[SERVICE] Inicio de logout para usuario: {}", username);
     }
 
-    protected void logFinLogout(String username) {
+    private void logFinLogout(String username)
+    {
         log.info("[SERVICE] Logout completado para usuario: {}", username);
     }
 
-    protected void logError(String username, Exception e) {
+    private void logError(String username, Exception e)
+    {
         log.error("[SERVICE] Error en proceso de login para usuario: {} — {}", username, e.getMessage(), e);
     }
 }

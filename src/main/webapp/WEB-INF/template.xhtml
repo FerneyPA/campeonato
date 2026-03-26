@@ -1,113 +1,55 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core" xmlns:ui="jakarta.faces.facelets"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><ui:insert name="titulo">Campeonato</ui:insert></title>
-    <ui:insert name="estilos" />
+	<title>Campeonato</title>
+	<h:outputStylesheet library="primefaces-saga" name="theme.css" />
+	<h:outputStylesheet library="primefaces"
+		name="primeicons/primeicons.css" />
+	<h:outputStylesheet library="css" name="menu.css" />
+
+
+	<meta charset="UTF-8" />
 </h:head>
 
 <h:body>
 
-    <p:growl id="mensajesGlobales" showDetail="false" life="5000" />
 
-    <!-- ============================================================
-         Barra de navegación dinámica — solo si está autenticado
-         El menú se construye recursivamente desde #{menuCache.items}
-         ============================================================ -->
-    <ui:fragment rendered="#{usuarioSesion.autenticado}">
+	<div class="layout-wrapper">
 
-        <p:menubar styleClass="campeonato-menubar">
 
-            <f:facet name="leftContent">
-                <h:outputText value="Campeonato"
-                              style="font-weight: bold; font-size: 18px; padding-left: 8px;" />
-            </f:facet>
+		<ui:fragment rendered="#{usuarioSesion.autenticado}">
+			<h:form id="menuForm">
 
-            <!-- ============================================================
-                 Iteración sobre los nodos raíz del menú
-                 Cada nodo puede ser agrupador (submenu) o item (link)
-                 ============================================================ -->
-            <ui:repeat value="#{menuCache.items}" var="nodo">
+				<div
+					style="display: flex; justify-content: space-between; align-items: center;">
 
-                <!-- Nodo agrupador con hijos → submenu -->
-                <p:submenu label="#{nodo.nombre}"
-                           rendered="#{nodo.agrupador and nodo.tieneHijos}">
+					<!-- Menú dinámico -->
+					<p:menubar model="#{menuModelBean.modelo}" style="flex:1;" />
 
-                    <!-- Nivel 2 -->
-                    <ui:repeat value="#{nodo.hijos}" var="hijo">
+					<!-- Botón de cerrar sesión -->
+					<p:menubar style="margin-left:1rem;">
+						<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+							action="#{loginBean.logout}" ajax="false" />
+					</p:menubar>
 
-                        <!-- Hijo agrupador → sub-submenu -->
-                        <p:submenu label="#{hijo.nombre}"
-                                   rendered="#{hijo.agrupador and hijo.tieneHijos}">
+				</div>
 
-                            <!-- Nivel 3+ recursivo -->
-                            <ui:repeat value="#{hijo.hijos}" var="nieto">
-                                <p:submenu label="#{nieto.nombre}"
-                                           rendered="#{nieto.agrupador and nieto.tieneHijos}">
-                                    <ui:repeat value="#{nieto.hijos}" var="bisnieto">
-                                        <p:menuitem value="#{bisnieto.nombre}"
-                                                    url="#{bisnieto.url}"
-                                                    rendered="#{not bisnieto.agrupador}" />
-                                    </ui:repeat>
-                                </p:submenu>
-                                <p:menuitem value="#{nieto.nombre}"
-                                            url="#{nieto.url}"
-                                            rendered="#{not nieto.agrupador}" />
-                            </ui:repeat>
+			</h:form>
 
-                        </p:submenu>
+		</ui:fragment>
 
-                        <!-- Hijo item → link directo -->
-                        <p:menuitem value="#{hijo.nombre}"
-                                    url="#{hijo.url}"
-                                    rendered="#{not hijo.agrupador}" />
 
-                    </ui:repeat>
+		<div class="layout-content">
+			<ui:insert name="contenido" />
+		</div>
 
-                </p:submenu>
 
-                <!-- Nodo item directo en la barra → link -->
-                <p:menuitem value="#{nodo.nombre}"
-                            url="#{nodo.url}"
-                            rendered="#{not nodo.agrupador}" />
+		<footer class="layout-footer"> Campeonato © 2026 </footer>
 
-            </ui:repeat>
-
-            <!-- Usuario activo y cerrar sesión -->
-            <f:facet name="rightContent">
-                <h:panelGroup style="display: flex; align-items: center; gap: 12px;">
-                    <h:outputText value="#{usuarioSesion.username} (#{usuarioSesion.rol})"
-                                  style="font-size: 13px;" />
-                    <h:form>
-                        <p:commandButton value="#{msg.homeBotonCerrarSesion}"
-                                         action="#{loginBean.logout}"
-                                         icon="pi pi-sign-out"
-                                         styleClass="p-button-outlined p-button-secondary" />
-                    </h:form>
-                </h:panelGroup>
-            </f:facet>
-
-        </p:menubar>
-
-    </ui:fragment>
-
-    <!-- Contenido principal -->
-    <div class="campeonato-content">
-        <ui:insert name="contenido" />
-    </div>
-
-    <!-- Footer -->
-    <div class="campeonato-footer">
-        <h:outputText value="Campeonato © 2026" />
-    </div>
-
-    <ui:insert name="scripts" />
+	</div>
 
 </h:body>
 </html>

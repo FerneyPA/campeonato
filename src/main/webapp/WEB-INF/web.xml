@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
     <display-name>campeonato</display-name>
@@ -10,18 +11,64 @@
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
-    <!-- JSF Faces Servlet -->
+    <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <!-- Mapeos correctos -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
-    <!-- Timeout de sesión: 30 minutos -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- ⚠️ ELIMINADO: NO mapear /jakarta.faces.resource -->
+    <!-- JSF ya maneja esa ruta automáticamente -->
+
+    <!-- Tema PrimeFaces -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>saga</param-value>
+    </context-param>
+
+    <!-- Configuración recomendada -->
+    <context-param>
+        <param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.CLIENT_LOCALE</param-name>
+        <param-value>es</param-value>
+    </context-param>
+
+    <!-- ============================================================
+         Filtro de permisos — MAPEADO CORRECTAMENTE
+         ============================================================ -->
+    <filter>
+        <filter-name>PermisoFilter</filter-name>
+        <filter-class>com.campeonato.filters.PermisoFilter</filter-class>
+    </filter>
+
+    <!-- El filtro SOLO aplica a páginas .xhtml -->
+    <filter-mapping>
+        <filter-name>PermisoFilter</filter-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </filter-mapping>
+
+    <!-- Timeout de sesión -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -31,6 +78,7 @@
         <error-code>404</error-code>
         <location>/login.xhtml</location>
     </error-page>
+
     <error-page>
         <error-code>500</error-code>
         <location>/login.xhtml</location>

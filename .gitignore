@@ -1,26 +1,38 @@
+# --- CONFIGURACIONES SENSIBLES (DB & SEGURIDAD) ---
 src/main/resources/conexion/seguridad.properties
 src/main/resources/conexion/campeonato.properties
 src/main/resources/conexion/estadisticas.properties
-TelosysTools/*.dbrep
-TelosysTools/telosys-tools.cfg
 
+
+# --- ARTEFACTOS DE COMPILACIÓN (MAVEN/GRADLE/JAVA) ---
 target/
 build_output/
-.classpath
-.project
-.settings/
-.metadata/
-logs/
-*.log
-
+out/
+bin/
 *.class
-*.log
-target/
-
 *.jar
 *.war
 *.ear
 hs_err_pid*
 
+# --- ESPECÍFICO DE INTELLIJ IDEA ---
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# --- ESPECÍFICO DE ECLIPSE (LIMPIEZA) ---
+.metadata/
+.classpath
+.project
+.settings/
+*.launch
+
+# --- LOGS Y TEMPORALES ---
+logs/
+*.log
+
+# --- SISTEMA OPERATIVO ---
 Thumbs.db
 Desktop.ini
+.DS_Store

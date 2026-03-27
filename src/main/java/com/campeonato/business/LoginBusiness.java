@@ -22,77 +22,65 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 @Stateless
-public class LoginBusiness
-{
+public class LoginBusiness {
 
-    private static final Logger log = LogManager.getLogger(LoginBusiness.class);
+	private static final Logger log = LogManager.getLogger(LoginBusiness.class);
 
-    @Inject
-    private ConnectionManager connectionManager;
+	@Inject
+	private ConnectionManager connectionManager;
 
-    @Inject
-    private MenuBusiness menuBusiness;
+	@Inject
+	private MenuBusiness menuBusiness;
 
-    public boolean validarCredenciales(String username, String clave, UsuarioSesion usuarioSesion, MenuCache menuCache)
-    {
+	public boolean validarCredenciales(String username, String clave, UsuarioSesion usuarioSesion,
+			MenuCache menuCache) {
 
-        LogManager.inicio(log, "validarCredenciales");
 
-        CampeonatoConnection conn = null;
+		CampeonatoConnection conn = null;
 
-        try
-        {
-            conn = connectionManager.getConnectionSeguridad();
+		try {
+			conn = connectionManager.getConnectionSeguridad();
 
-            UsuarioDAO usuarioDAO = DAOFactory.getUsuarioDAO(conn);
-            MenuDAO    menuDAO    = DAOFactory.getMenuDAO(conn);
+			UsuarioDAO usuarioDAO = DAOFactory.getUsuarioDAO(conn);
+			MenuDAO menuDAO = DAOFactory.getMenuDAO(conn);
 
-            boolean credencialesOk = usuarioDAO.existeUsuario(username, clave);
+			boolean credencialesOk = usuarioDAO.existeUsuario(username, clave);
 
-            if (!credencialesOk)
-            {
-                log.warn("[LoginBusiness] Credenciales inválidas para usuario: {}", username);
-                return false;
-            }
+			if (!credencialesOk) {
+				throw new CampeonatoException(CampeonatoException.BUS_CREDENCIALES);
+			}
 
-            String rol = usuarioDAO.getRolUsuario(username);
+			String rol = usuarioDAO.getRolUsuario(username);
 
-            Map<String, Set<String>> operacionesPorUrl = usuarioDAO.getOperacionesPorUrl(username);
+			Map<String, Set<String>> operacionesPorUrl = usuarioDAO.getOperacionesPorUrl(username);
 
-            List<MenuItemDto> nodos = menuDAO.getNodosMenu(username);
+			List<MenuItemDto> nodos = menuDAO.getNodosMenu(username);
 
-            List<MenuItem> arbol = menuBusiness.construirArbol(nodos);
+			List<MenuItem> arbol = menuBusiness.construirArbol(nodos);
 
-            usuarioSesion.iniciarSesion(username, rol, operacionesPorUrl);
-            menuCache.cargar(arbol);
+			usuarioSesion.iniciarSesion(username, rol, operacionesPorUrl);
+			menuCache.cargar(arbol);
 
-            LogManager.fin(log, "validarCredenciales");
-            return true;
+			return true;
 
-        } catch (CampeonatoException e)
-        {
-            if (conn != null)
-            {
-                conn.error();
-            }
-            log.error("[LoginBusiness] Error al validar credenciales para: {} — {}", username, e.toString());
-            throw new CampeonatoException(CampeonatoException.BUS_CREDENCIALES, e);
+		} catch (CampeonatoException e) {
+			if (conn != null) {
+				conn.error();
+			}
+			log.error("[LoginBusiness] Error al validar credenciales para: {} — {}", username, e.toString());
+			throw e;
 
-        } catch (Exception e)
-        {
-            if (conn != null)
-            {
-                conn.error();
-            }
-            log.error("[LoginBusiness] Error inesperado en validarCredenciales", e);
-            throw new CampeonatoException(CampeonatoException.BUS_PROCESO, e);
+		} catch (Exception e) {
+			if (conn != null) {
+				conn.error();
+			}
+			log.error("[LoginBusiness] Error inesperado en validarCredenciales", e);
+			throw new CampeonatoException(CampeonatoException.BUS_PROCESO, e);
 
-        } finally
-        {
-            if (conn != null)
-            {
-                conn.close();
-            }
-        }
-    }
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
 }

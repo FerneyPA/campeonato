@@ -34,7 +34,6 @@ public class AbstractLoginService implements ILoginService
     @Override
     public boolean login(String username, String password, UsuarioSesion usuarioSesion)
     {
-        logInicioLogin(username);
 
         try
         {
@@ -44,11 +43,9 @@ public class AbstractLoginService implements ILoginService
 
             if (resultado)
             {
-                // Reconstruir el MenuModel con el árbol cargado en MenuCache
                 menuModelBean.refrescar();
             }
 
-            logFinLogin(username, resultado);
             return resultado;
 
         } catch (Exception e)
@@ -64,11 +61,9 @@ public class AbstractLoginService implements ILoginService
     @Override
     public void logout(String username, UsuarioSesion usuarioSesion)
     {
-        logInicioLogout(username);
         usuarioSesion.cerrarSesion();
         menuCache.limpiar();
         menuModelBean.refrescar();
-        logFinLogout(username);
     }
 
     // ============================================================

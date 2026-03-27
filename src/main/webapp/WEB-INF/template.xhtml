@@ -9,43 +9,30 @@
 	<h:outputStylesheet library="primefaces"
 		name="primeicons/primeicons.css" />
 	<h:outputStylesheet library="css" name="menu.css" />
-
-
 	<meta charset="UTF-8" />
 </h:head>
 
 <h:body>
 
-
 	<div class="layout-wrapper">
-
 
 		<ui:fragment rendered="#{usuarioSesion.autenticado}">
 			<h:form id="menuForm">
-
+				<p:growl id="mensajes" showDetail="false" life="5000" />
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
-
-					<!-- Menú dinámico -->
 					<p:menubar model="#{menuModelBean.modelo}" style="flex:1;" />
-
-					<!-- Botón de cerrar sesión -->
 					<p:menubar style="margin-left:1rem;">
 						<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
 							action="#{loginBean.logout}" ajax="false" />
 					</p:menubar>
-
 				</div>
-
 			</h:form>
-
 		</ui:fragment>
-
 
 		<div class="layout-content">
 			<ui:insert name="contenido" />
 		</div>
-
 
 		<footer class="layout-footer"> Campeonato © 2026 </footer>
 

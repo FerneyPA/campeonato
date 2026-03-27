@@ -18,78 +18,71 @@ import java.io.Serializable;
 @SessionScoped
 public class MenuModelBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Inject
-    private MenuCache menuCache;
+	@Inject
+	private MenuCache menuCache;
 
-    private MenuModel modelo;
+	private MenuModel modelo;
 
-    // ============================================================
-    // Inicializa el menú al iniciar la sesión del usuario
-    // ============================================================
-    @PostConstruct
-    public void init() {
-        construir();
-    }
+	// ============================================================
+	// Inicializa el menú al iniciar la sesión del usuario
+	// ============================================================
+	@PostConstruct
+	public void init() {
+		construir();
+	}
 
-    // ============================================================
-    // Construye el modelo PrimeFaces desde el árbol de MenuItem
-    // ============================================================
-    public void construir() {
-        modelo = new DefaultMenuModel();
+	// ============================================================
+	// Construye el modelo PrimeFaces desde el árbol de MenuItem
+	// ============================================================
+	public void construir() {
+		modelo = new DefaultMenuModel();
 
-        if (menuCache == null || menuCache.getItems() == null) {
-            return;
-        }
+		if (menuCache == null || menuCache.getItems() == null) {
+			return;
+		}
 
-        for (MenuItem categoria : menuCache.getItems()) {
+		for (MenuItem categoria : menuCache.getItems()) {
 
-            if (categoria == null) continue;
+			if (categoria == null)
+				continue;
 
-            // NIVEL 1 — Categoría principal
-            DefaultSubMenu subMenuCategoria = DefaultSubMenu.builder()
-                    .label(categoria.getNombre())
-                    .build();
+			// NIVEL 1 — Categoría principal
+			DefaultSubMenu subMenuCategoria = DefaultSubMenu.builder().label(categoria.getNombre()).build();
 
-            for (MenuItem columna : categoria.getHijos()) {
+			for (MenuItem columna : categoria.getHijos()) {
 
-                if (columna == null) continue;
+				if (columna == null)
+					continue;
 
-                // NIVEL 2 — Submenú dentro de categoría
-                DefaultSubMenu subMenuColumna = DefaultSubMenu.builder()
-                        .label(columna.getNombre())
-                        .build();
+				// NIVEL 2 — Submenú dentro de categoría
+				DefaultSubMenu subMenuColumna = DefaultSubMenu.builder().label(columna.getNombre()).build();
 
-                for (MenuItem item : columna.getHijos()) {
+				for (MenuItem item : columna.getHijos()) {
 
-                    if (item == null || item.isAgrupador()) continue;
+					if (item == null || item.isAgrupador())
+						continue;
 
-                    // NIVEL 3 — Items finales
-                    DefaultMenuItem menuItem = DefaultMenuItem.builder()
-                            .value(item.getNombre())
-                            .url(item.getUrl())
-                            .build();
+					// NIVEL 3 — Items finales
+					DefaultMenuItem menuItem = DefaultMenuItem.builder().value(item.getNombre()).url(item.getUrl())
+							.build();
 
-                    subMenuColumna.getElements().add(menuItem);
-                }
+					subMenuColumna.getElements().add(menuItem);
+				}
 
-                subMenuCategoria.getElements().add(subMenuColumna);
-            }
+				subMenuCategoria.getElements().add(subMenuColumna);
+			}
 
-            modelo.getElements().add(subMenuCategoria);
-        }
+			modelo.getElements().add(subMenuCategoria);
+		}
 
-    }
+	}
+	public void refrescar() {
+		construir();
+	}
 
-    // ============================================================
-    // Reconstruye el menú después del login
-    // ============================================================
-    public void refrescar() {
-        construir();
-    }
-
-    public MenuModel getModelo() {
-        return modelo;
-    }
+	public MenuModel getModelo() {
+		return modelo;
+	}
 }

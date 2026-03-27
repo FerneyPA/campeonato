@@ -37,7 +37,6 @@ public class PermisoFilter implements Filter {
         String uri = httpRequest.getRequestURI();
         String url = httpRequest.getServletPath();
 
-        System.out.println("URL FILTRO: " + url);
 
         // ============================================================
         // 1. Recursos JSF/PrimeFaces — SIEMPRE permitir

@@ -32,7 +32,6 @@ public class MenuDAO extends BaseDAO
     public List<MenuItemDto> getNodosMenu(String username) throws CampeonatoException
     {
 
-        LogManager.inicio(log, "getNodosMenu");
 
         List<MenuItemDto> nodos = new ArrayList<>();
 
@@ -52,7 +51,6 @@ public class MenuDAO extends BaseDAO
             throw manejarError("getNodosMenu", e);
         }
 
-        LogManager.fin(log, "getNodosMenu");
         return nodos;
     }
 }

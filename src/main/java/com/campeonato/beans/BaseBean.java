@@ -26,9 +26,11 @@ public abstract class BaseBean implements Serializable
     @Inject
     private UsuarioSesion usuarioSesion;
 
-    private void agregarMensaje(FacesMessage.Severity severidad, String mensaje)
-    {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, mensaje, null));
+    
+    private void agregarMensaje(FacesMessage.Severity severidad, String mensaje) {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.getExternalContext().getFlash().setKeepMessages(true);
+        ctx.addMessage(null, new FacesMessage(severidad, mensaje, null));
     }
 
     private String formatear(String clave, Object... parametros)

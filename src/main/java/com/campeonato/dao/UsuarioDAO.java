@@ -33,7 +33,6 @@ public class UsuarioDAO extends BaseDAO
     public boolean existeUsuario(String username, String password) throws CampeonatoException
     {
 
-        LogManager.inicio(log, "existeUsuario");
 
         try (PreparedStatement ps = conn.prepareStatement(USUARIO))
         {
@@ -44,7 +43,6 @@ public class UsuarioDAO extends BaseDAO
                 if (rs.next())
                 {
                     boolean existe = rs.getInt(1) > 0;
-                    LogManager.fin(log, "existeUsuario");
                     return existe;
                 }
             }
@@ -59,7 +57,6 @@ public class UsuarioDAO extends BaseDAO
     public Map<String, Set<String>> getOperacionesPorUrl(String username) throws CampeonatoException
     {
 
-        LogManager.inicio(log, "getOperacionesPorUrl");
 
         Map<String, Set<String>> mapa = new HashMap<>();
 
@@ -102,14 +99,12 @@ public class UsuarioDAO extends BaseDAO
             throw manejarError("getOperacionesPorUrl", e);
         }
 
-        LogManager.fin(log, "getOperacionesPorUrl");
         return mapa;
     }
 
     public String getRolUsuario(String username) throws CampeonatoException
     {
 
-        LogManager.inicio(log, "getRolUsuario");
 
         try (PreparedStatement ps = conn.prepareStatement(ROL_USUARIO))
         {
@@ -119,7 +114,6 @@ public class UsuarioDAO extends BaseDAO
                 if (rs.next())
                 {
                     String rol = rs.getString("nombre");
-                    LogManager.fin(log, "getRolUsuario");
                     return rol;
                 }
             }

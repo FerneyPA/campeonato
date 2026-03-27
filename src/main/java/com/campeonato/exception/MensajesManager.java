@@ -1,26 +1,20 @@
 package com.campeonato.exception;
-
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
 public class MensajesManager {
-
-    private static final String ARCHIVO_BASE = "mensajes";
+    private static final String ARCHIVO_MENSAJE = "mensajes";
+    private static final String ARCHIVO_ERROR = "errores";
 
     // ============================================================
-    // Obtiene el mensaje según el código y el idioma activo
-    // Si no encuentra el mensaje en el idioma activo cae al
-    // archivo base (español)
+    // Mensajes informativos — mensajes.properties
     // ============================================================
-
     public static String getMensaje(String codigo) {
         return getMensaje(codigo, Locale.getDefault());
     }
-
     public static String getMensaje(String codigo, Locale locale) {
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle(ARCHIVO_BASE, locale);
+            ResourceBundle bundle = ResourceBundle.getBundle(ARCHIVO_MENSAJE, locale);
             return bundle.getString(codigo);
         } catch (MissingResourceException e) {
             return "[" + codigo + "] Mensaje no disponible.";
@@ -28,15 +22,27 @@ public class MensajesManager {
     }
 
     // ============================================================
-    // Obtiene el mensaje de una CampeonatoException
-    // usando su código como clave en el archivo de propiedades
+    // Errores — errores.properties
     // ============================================================
-
-    public static String getMensaje(CampeonatoException e) {
-        return getMensaje(e.getCodigo());
+    public static String getError(String codigo) {
+        return getError(codigo, Locale.getDefault());
+    }
+    public static String getError(String codigo, Locale locale) {
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle(ARCHIVO_ERROR, locale);
+            return bundle.getString(codigo);
+        } catch (MissingResourceException e) {
+            return "[" + codigo + "] Mensaje no disponible.";
+        }
     }
 
+    // ============================================================
+    // Obtiene el error de una CampeonatoException
+    // ============================================================
+    public static String getMensaje(CampeonatoException e) {
+        return getError(e.getCodigo());
+    }
     public static String getMensaje(CampeonatoException e, Locale locale) {
-        return getMensaje(e.getCodigo(), locale);
+        return getError(e.getCodigo(), locale);
     }
 }

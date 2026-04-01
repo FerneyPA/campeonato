@@ -8,7 +8,6 @@
 	<h:outputStylesheet library="primefaces-saga" name="theme.css" />
 	<h:outputStylesheet library="primefaces"
 		name="primeicons/primeicons.css" />
-	<h:outputStylesheet library="css" name="menu.css" />
 	<meta charset="UTF-8" />
 </h:head>
 
@@ -24,8 +23,11 @@
 					<p:menubar model="#{menuModelBean.modelo}" style="flex:1;" />
 					<p:menubar style="margin-left:1rem;">
 						<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
-							action="#{loginBean.logout}" ajax="false" />
+							action="#{loginBean.logout}" />
 					</p:menubar>
+
+
+
 				</div>
 			</h:form>
 		</ui:fragment>

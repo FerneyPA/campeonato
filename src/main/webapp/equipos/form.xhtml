@@ -1,0 +1,70 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="contenido">
+
+        <f:metadata>
+            <f:viewParam name="idEquipo" value="#{equipoBean.idEquipoParam}"/>
+            <f:viewAction action="#{equipoBean.initForm()}"/>
+        </f:metadata>
+
+        <h:form id="formEquipo">
+
+            <p:growl id="mensajes" showDetail="true" life="4000"/>
+
+            <!-- ─── TOOLBAR ─────────────────────────────────────────── -->
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <p:commandButton value="Guardar"
+                                     icon="pi pi-save"
+                                     action="#{equipoBean.guardar()}"
+                                     ajax="false"
+                                     rendered="#{equipoBean.puedeGuardar()}"/>
+                    <p:commandButton value="Cancelar"
+                                     icon="pi pi-arrow-left"
+                                     action="#{equipoBean.cancelar()}"
+                                     ajax="false"
+                                     styleClass="ui-button-secondary"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <!-- ─── FORMULARIO ──────────────────────────────────────── -->
+            <p:panel header="#{equipoBean.equipo.idEquipo == null ? 'Nuevo Equipo' : 'Editar Equipo'}"
+                     styleClass="ui-mt-2">
+
+                <p:panelGrid columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank">
+
+                    <!-- Nombre -->
+                    <p:outputLabel for="nombre" value="Nombre *"/>
+                    <p:inputText id="nombre"
+                                 value="#{equipoBean.equipo.nombre}"
+                                 required="true"
+                                 requiredMessage="El nombre es obligatorio."
+                                 maxlength="100"/>
+
+                    <!-- Ciudad -->
+                    <p:outputLabel for="ciudad" value="Ciudad"/>
+                    <p:inputText id="ciudad"
+                                 value="#{equipoBean.equipo.ciudad}"
+                                 maxlength="100"/>
+
+                    <!-- Fecha Fundación -->
+                    <p:outputLabel for="fechaFundacion" value="Fecha Fundación"/>
+                    <p:datePicker id="fechaFundacion"
+                                  value="#{equipoBean.equipo.fechaFundacion}"
+                                  pattern="dd/MM/yyyy"
+                                  showIcon="true"/>
+
+                </p:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

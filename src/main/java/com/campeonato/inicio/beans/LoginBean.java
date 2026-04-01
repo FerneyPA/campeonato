@@ -7,6 +7,9 @@ import com.campeonato.services.ILoginService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.faces.context.FacesContext;
+
+import org.primefaces.PrimeFaces;
 
 @Named
 @RequestScoped
@@ -58,9 +61,22 @@ public class LoginBean extends BaseBean {
 	}
 
 	public String logout() {
-	    loginService.logout(usuarioSesion.getUsername(), usuarioSesion);
+	    try {
+	        loginService.logout(usuarioSesion != null ? usuarioSesion.getUsername() : null, usuarioSesion);
+	    } catch (Exception e) {
+	        // ignorar
+	    }
 	    invalidarSesion();
-	    return "login";
+
+	    FacesContext faces = FacesContext.getCurrentInstance();
+	    String loginUrl = faces.getExternalContext().getRequestContextPath() + "/login.xhtml";
+
+	    if (faces.getPartialViewContext().isAjaxRequest()) {
+	        PrimeFaces.current().executeScript("window.top.location.href='" + loginUrl + "';");
+	        return null;
+	    }
+
+	    return "login?faces-redirect=true";
 	}
 
 	public void setPassword(String password) {

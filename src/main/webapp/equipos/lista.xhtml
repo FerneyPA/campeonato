@@ -1,0 +1,84 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="contenido">
+
+		<h:form id="formLista">
+
+			<p:growl id="mensajes" showDetail="false" life="5000" />
+
+			<!-- ─── TOOLBAR ─────────────────────────────────────────── -->
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						action="#{equipoBean.irNuevo()}" ajax="false"
+						rendered="#{equipoBean.puedeGuardar()}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<!-- ─── FILTRO ──────────────────────────────────────────── -->
+			<p:panel styleClass="ui-mt-2">
+				<p:outputLabel for="filtro" value="Buscar:" />
+				<p:inputText id="filtro" value="#{equipoBean.filtro}"
+					placeholder="Nombre o ciudad..." />
+				<p:commandButton value="Buscar" icon="pi pi-search"
+					action="#{equipoBean.buscar()}"
+					update="formLista:tablaEquipos formLista:mensajes" />
+				<p:commandButton value="Limpiar" icon="pi pi-times"
+					action="#{equipoBean.limpiar()}"
+					update="formLista:tablaEquipos formLista:mensajes" />
+			</p:panel>
+
+			<!-- ─── TABLA ───────────────────────────────────────────── -->
+			<p:dataTable id="tablaEquipos" value="#{equipoBean.lista}" var="e"
+				paginator="true" rows="10" rowsPerPageTemplate="10,20,50"
+				emptyMessage="No se encontraron equipos." styleClass="ui-mt-2">
+
+				<p:column headerText="Nombre" sortBy="#{e.nombre}">
+					<h:outputText value="#{e.nombre}" />
+				</p:column>
+
+				<p:column headerText="Ciudad" sortBy="#{e.ciudad}">
+					<h:outputText value="#{e.ciudad}" />
+				</p:column>
+
+				<p:column headerText="Fecha Fundación">
+					<h:outputText value="#{e.fechaFundacion}">
+						<f:convertDateTime pattern="dd/MM/yyyy" type="localDate" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Acciones"
+					style="width:120px; text-align:center">
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						action="#{equipoBean.irEditar(e)}" ajax="false"
+						rendered="#{equipoBean.puedeEditar()}" />
+
+					<p:commandButton icon="pi pi-trash" title="Eliminar"
+						styleClass="ui-button-danger"
+						action="#{equipoBean.eliminar(e)}"
+						update="formLista:tablaEquipos formLista:mensajes"
+						process="@this"
+						rendered="#{equipoBean.puedeEliminar()}">
+						<p:confirm header="Confirmar"
+							message="¿Desea eliminar el equipo #{e.nombre}?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<!-- ─── CONFIRM DIALOG ──────────────────────────────────── -->
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sí" type="button"
+					styleClass="ui-confirmdialog-yes" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

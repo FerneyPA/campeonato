@@ -29,54 +29,37 @@ public class MenuModelBean implements Serializable
 
     private MenuModel modelo;
 
-    public void construir()
-    {
+    public void construir() {
         String contextPath = servletContext.getContextPath();
         modelo = new DefaultMenuModel();
-        if (menuCache == null || menuCache.getItems() == null)
-        {
+        if (menuCache == null || menuCache.getItems() == null) {
             return;
         }
-        for (MenuItem categoria : menuCache.getItems())
-        {
-            if (categoria == null)
-            {
-                continue;
-            }
-            // NIVEL 1 — Categoría principal
+        for (MenuItem categoria : menuCache.getItems()) {
+            if (categoria == null) continue;
+            // NIVEL 1 — siempre SubMenu
             DefaultSubMenu subMenuCategoria = DefaultSubMenu.builder().label(categoria.getNombre()).build();
-            for (MenuItem columna : categoria.getHijos())
-            {
-                if (columna == null)
-                {
-                    continue;
-                }
-                // NIVEL 2 — puede ser submenú o ítem navegable directamente
-                if (columna.isAgrupador())
-                {
-                    // Tiene hijos → crear submenú normal
-                    DefaultSubMenu subMenuColumna = DefaultSubMenu.builder().label(columna.getNombre()).build();
-                    for (MenuItem item : columna.getHijos())
-                    {
-                        if (item == null || item.isAgrupador())
-                        {
-                            continue;
-                        }
-                        // NIVEL 3 — Items finales
-                        DefaultMenuItem menuItem = DefaultMenuItem.builder().value(item.getNombre())
-                                .url(contextPath + item.getUrl()).build();
-                        subMenuColumna.getElements().add(menuItem);
-                    }
-                    subMenuCategoria.getElements().add(subMenuColumna);
-                } else
-                {
-                    // No tiene hijos → es navegable directo desde nivel 2
-                    DefaultMenuItem menuItem = DefaultMenuItem.builder().value(columna.getNombre())
-                            .url(contextPath + columna.getUrl()).build();
-                    subMenuCategoria.getElements().add(menuItem);
-                }
-            }
+            agregarHijos(subMenuCategoria, categoria, contextPath);
             modelo.getElements().add(subMenuCategoria);
+        }
+    }
+
+    private void agregarHijos(DefaultSubMenu padre, MenuItem nodo, String contextPath) {
+        for (MenuItem hijo : nodo.getHijos()) {
+            if (hijo == null) continue;
+            if (hijo.isAgrupador()) {
+                // Tiene hijos → crear submenú y recursar
+                DefaultSubMenu subMenu = DefaultSubMenu.builder().label(hijo.getNombre()).build();
+                agregarHijos(subMenu, hijo, contextPath);
+                padre.getElements().add(subMenu);
+            } else {
+                // Es navegable → ítem final
+                DefaultMenuItem menuItem = DefaultMenuItem.builder()
+                    .value(hijo.getNombre())
+                    .url(contextPath + hijo.getUrl())
+                    .build();
+                padre.getElements().add(menuItem);
+            }
         }
     }
 

@@ -107,27 +107,27 @@ public abstract class BaseBean implements Serializable
         agregarMensaje(FacesMessage.SEVERITY_WARN, formatear(clave, parametros));
     }
 
-    protected boolean puedeConsultar()
+    public  boolean puedeConsultar()
     {
         return tieneOperacion("CONSULTAR");
     }
 
-    protected boolean puedeEditar()
+    public  boolean puedeEditar()
     {
         return tieneOperacion("EDITAR");
     }
 
-    protected boolean puedeExportar()
+    public  boolean puedeExportar()
     {
         return tieneOperacion("EXPORTAR");
     }
 
-    protected boolean puedeGuardar()
+    public  boolean puedeGuardar()
     {
         return tieneOperacion("GUARDAR");
     }
 
-    protected boolean puedeVer()
+    public  boolean puedeVer()
     {
         return tieneOperacion("VER");
     }

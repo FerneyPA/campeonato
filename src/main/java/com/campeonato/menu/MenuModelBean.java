@@ -22,6 +22,9 @@ public class MenuModelBean implements Serializable {
 
 	@Inject
 	private MenuCache menuCache;
+	
+	@Inject
+	private jakarta.servlet.ServletContext servletContext;
 
 	private MenuModel modelo;
 
@@ -37,6 +40,7 @@ public class MenuModelBean implements Serializable {
 	// Construye el modelo PrimeFaces desde el árbol de MenuItem
 	// ============================================================
 	public void construir() {
+	    String contextPath = servletContext.getContextPath();
 		modelo = new DefaultMenuModel();
 
 		if (menuCache == null || menuCache.getItems() == null) {
@@ -65,7 +69,7 @@ public class MenuModelBean implements Serializable {
 						continue;
 
 					// NIVEL 3 — Items finales
-					DefaultMenuItem menuItem = DefaultMenuItem.builder().value(item.getNombre()).url(item.getUrl())
+					DefaultMenuItem menuItem = DefaultMenuItem.builder().value(item.getNombre()).url(contextPath  + item.getUrl())
 							.build();
 
 					subMenuColumna.getElements().add(menuItem);
